@@ -6,10 +6,13 @@
 //  Copyright (c) 2014 Ben Johnson. All rights reserved.
 //
 
+
 #include <iostream>
 #include <cstring>
 #include <vector>
 #include <cmath>
+#include <iomanip>
+
 
 using namespace std;
 
@@ -70,22 +73,47 @@ char evaluateStatement(statement currentStatment,string currentResult, vector<ch
     else
         return '0';
 }
+void printCharacter(char character,int length)
+{
+    for (int i = 0; i < length; i++)
+    {
+        cout << character;
+    }
+}
+void breakLine()
+{
+    cout << endl << endl;
+}
+void printTitle(string title)
+{
+    int length = 50;
+    printCharacter('-', length);
+    
+    cout << endl << endl;
+    int offset = int((length - title.length()) / 2);
+    printCharacter(' ', offset);
+    cout << title;
+    breakLine();
+    printCharacter('-', length);
+    breakLine();
+}
 
 int main(int argc, const char * argv[])
 {
-    cout << "Welcome to Logic Solver" << endl << endl;
+
+    printTitle("Welcome to Logic Solver");
     bool continueInput = true;
     int numberOfCharacts = 0;
     vector<character> characters;
     
     while (continueInput) {
-        cout << "Enter a new character (Q to quit): ";
-        char result;
-        cin >> result;
-        if (result != 'Q') {
+        cout << "Enter a new character: ";
+        string result;
+        getline(cin, result);
+        if (!result.empty()) {
             character newCharacter;
           //  cout << "Enter a new Character: ";
-            newCharacter.name = result;
+            newCharacter.name = result[0];
            // cout << endl;
             characters.push_back(newCharacter);
             
@@ -102,10 +130,10 @@ int main(int argc, const char * argv[])
         int currentStatement = 0;
         while (continueStatements)
         {
-            cout << "Enter Statement for " << currentCharacter.name << " (Q to Quit): ";
-            char inputStatement[3];
-            cin >> inputStatement;
-            if (inputStatement[0] != 'Q') {
+            cout << "Enter Statement for " << currentCharacter.name << ": ";
+            string inputStatement;
+            getline(cin, inputStatement);
+            if (!inputStatement.empty()) {
                 struct statement newStatement;
                 if (inputStatement[0] == '!') {
                     newStatement.truth = false;
@@ -129,6 +157,13 @@ int main(int argc, const char * argv[])
             
        
     }
+    cout << endl;
+    
+    for (int i = 0; i < numberOfCharacts; i++) {
+        character currentCharacter = characters[i];
+        cout << setw(5) << currentCharacter.name;
+    }
+    cout << endl;
     char test[numberOfCharacts + 1];
     for (int i = 0; i < numberOfCharacts; i++) {
         test[i] = '0';
@@ -139,6 +174,10 @@ int main(int argc, const char * argv[])
     do
     {
         result.push_back(test);
+        for (int i = 0; i < numberOfCharacts; i++) {
+            cout << setw(5) << test[i];
+        }
+        cout << endl;
     } while (next(test + 0, test + numberOfCharacts));
     
     string finalResult;
@@ -179,10 +218,10 @@ int main(int argc, const char * argv[])
         }
         if (contine) {
             finalResult = result[i];
-            cout << "Final Result: " << result[i] << endl;
+            cout << endl << "Final Result: " << result[i];
         }
     }
- 
+    cout << endl;
    // cout << "Evaluated Statements: " << evaluatedStatements;
     for (int i = 0; i < finalResult.size(); i++) {
         if (finalResult[i] == '0') {
