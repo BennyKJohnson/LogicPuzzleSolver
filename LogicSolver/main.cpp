@@ -73,20 +73,20 @@ char evaluateStatement(statement currentStatment,string currentResult, vector<ch
 
 int main(int argc, const char * argv[])
 {
-    cout << "Welcome to Logic Solver" << endl;
+    cout << "Welcome to Logic Solver" << endl << endl;
     bool continueInput = true;
     int numberOfCharacts = 0;
     vector<character> characters;
     
     while (continueInput) {
-        cout << "Enter a new character? Y/N: ";
+        cout << "Enter a new character (Q to quit): ";
         char result;
         cin >> result;
-        if (result == 'Y') {
+        if (result != 'Q') {
             character newCharacter;
-            cout << "Enter name: ";
-            cin >>  newCharacter.name;
-            cout << endl;
+          //  cout << "Enter a new Character: ";
+            newCharacter.name = result;
+           // cout << endl;
             characters.push_back(newCharacter);
             
             numberOfCharacts++;
@@ -100,33 +100,32 @@ int main(int argc, const char * argv[])
         character currentCharacter = characters[i];
         bool continueStatements = true;
         int currentStatement = 0;
-        do
+        while (continueStatements)
         {
-            cout << "Enter Statement for " << currentCharacter.name << ": ";
+            cout << "Enter Statement for " << currentCharacter.name << " (Q to Quit): ";
             char inputStatement[3];
             cin >> inputStatement;
-            struct statement newStatement;
-            if (inputStatement[0] == '!') {
-                newStatement.truth = false;
-                newStatement.name = inputStatement[1];
+            if (inputStatement[0] != 'Q') {
+                struct statement newStatement;
+                if (inputStatement[0] == '!') {
+                    newStatement.truth = false;
+                    newStatement.name = inputStatement[1];
+                }
+                else
+                {
+                    newStatement.truth = true;
+                    newStatement.name = inputStatement[0];
+                }
+                currentCharacter.statements.push_back(newStatement);
+                
+                currentStatement++;
+                characters[i] = currentCharacter;
             }
             else
             {
-                newStatement.truth = true;
-                newStatement.name = inputStatement[0];
-            }
-            currentCharacter.statements.push_back(newStatement);
-            
-            currentStatement++;
-            char result;
-            cout << "Enter another statement: ";
-            cin >> result;
-            characters[i] = currentCharacter;
-            
-            if (result != 'Y') {
                 continueStatements = false;
             }
-        }while (continueStatements);
+        }
             
        
     }
